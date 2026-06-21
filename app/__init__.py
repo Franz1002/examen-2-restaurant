@@ -2,6 +2,8 @@ from flask import Flask
 from .extensions import appbuilder, db
 from .views.categoria_view import CategoriaView
 from .models.categoria import Categoria
+from .views.menu_view import MenuView
+from .models.menu import Menu
 
 
 def create_app() -> Flask:
@@ -14,5 +16,6 @@ def create_app() -> Flask:
         db.create_all()
         
         appbuilder.add_view(CategoriaView, "Categorias", icon="fa-folder-open-o", category="Catálogos")
+        appbuilder.add_view(MenuView, "Menus", icon="fa-cutlery", category="Catálogos")
      
     return app
