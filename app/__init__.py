@@ -14,11 +14,8 @@ def create_app() -> Flask:
     db.init_app(app)
     with app.app_context():
         appbuilder.init_app(app, db.session)
-        
         db.create_all()
-        
         appbuilder.add_view(CategoriaView, "Categorias", icon="fa-folder-open-o", category="Catálogos")
         appbuilder.add_view(MenuView, "Menus", icon="fa-cutlery", category="Catálogos")
         appbuilder.add_view(ClienteView, "Clientes", icon="fa-user", category="Ventas")
-     
     return app
