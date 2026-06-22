@@ -21,16 +21,20 @@ def create_app() -> Flask:
         from .models.detalle_venta import DetalleVenta
         from .views.ticket_view import TicketView
         from .models.ticket import Ticket
+        from .views.registrar_venta_view import RegistrarVentaView
 
         db.create_all()
 
         appbuilder.add_view(CategoriaView, "Categorias", icon="fa-folder-open-o", category="Catálogos")
         appbuilder.add_view(MenuView, "Menus", icon="fa-cutlery", category="Catálogos")
+        appbuilder.add_view(RegistrarVentaView,"Registrar Venta",icon="fa-cash-register",category="Compras y ventas",href="/registrar-venta/")
         appbuilder.add_view(ClienteView, "Clientes", icon="fa-user", category="Ventas")
         appbuilder.add_view(VentaView, "Ventas", icon="fa-shopping-cart", category="Ventas")
         appbuilder.add_view(DetalleVentaView, "Detalle Ventas", icon="fa-list", category="Ventas")
         appbuilder.add_view(TicketView, "Tickets", icon="fa-ticket", category="Ventas")
-
+        
+        appbuilder.add_view_no_menu(RegistrarVentaView)
+        
         from .security_setup import setup_roles_and_permissions
         setup_roles_and_permissions(appbuilder)
 
