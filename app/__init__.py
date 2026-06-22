@@ -1,11 +1,5 @@
 from flask import Flask
 from .extensions import appbuilder, db
-from .views.categoria_view import CategoriaView
-from .models.categoria import Categoria
-from .views.menu_view import MenuView
-from .models.menu import Menu
-from .views.cliente_view import ClienteView
-from .models.cliente import Cliente
 
 
 def create_app() -> Flask:
@@ -14,8 +8,20 @@ def create_app() -> Flask:
     db.init_app(app)
     with app.app_context():
         appbuilder.init_app(app, db.session)
+
+        from .views.categoria_view import CategoriaView
+        from .models.categoria import Categoria
+        from .views.menu_view import MenuView
+        from .models.menu import Menu
+        from .views.cliente_view import ClienteView
+        from .models.cliente import Cliente
+        from .views.venta_view import VentaView
+        from .models.venta import Venta
+
         db.create_all()
+
         appbuilder.add_view(CategoriaView, "Categorias", icon="fa-folder-open-o", category="Catálogos")
         appbuilder.add_view(MenuView, "Menus", icon="fa-cutlery", category="Catálogos")
         appbuilder.add_view(ClienteView, "Clientes", icon="fa-user", category="Ventas")
+        appbuilder.add_view(VentaView, "Ventas", icon="fa-shopping-cart", category="Ventas")
     return app
