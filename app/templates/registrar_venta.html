@@ -1,0 +1,113 @@
+{% extends "appbuilder/base.html" %}
+
+{% block head_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/registrar_venta.css') }}">
+  <style>
+    body { overflow: hidden; }
+    .container, .container-fluid {
+      padding: 0 !important;
+      margin: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    #content-row, #content, .content {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+
+<div id="pos">
+
+  <div id="cols-menu"></div>
+
+  <div class="col-cobro">
+
+    <div class="cobro-sec">
+      <div class="cobro-sec-title">Cliente (opcional)</div>
+      <input class="inp" id="cli-nombre" type="text" placeholder="Nombre del cliente">
+      <div class="inp-row">
+        <input class="inp" id="cli-cedula" type="text" placeholder="CI / Cédula">
+        <input class="inp" id="cli-celular" type="text" placeholder="Celular">
+      </div>
+    </div>
+
+    <div class="cobro-sec" style="flex-shrink:0;">
+      <div class="cobro-sec-title" style="display:flex;justify-content:space-between;">
+        <span>Productos seleccionados</span>
+        <span id="pedido-cnt" style="color:#90caf9;">0</span>
+      </div>
+    </div>
+    <div class="pedido-area" id="pedido-area">
+      <div class="pedido-vacio" id="pedido-vacio">Sin productos aún</div>
+    </div>
+
+    <div class="cobro-sec">
+      <div class="total-row"><span>Subtotal</span><span class="amt" id="v-subtotal">0.00 Bs.</span></div>
+      <div class="desc-row">
+        <input type="number" class="inp-num" id="v-desc" min="0" step="0.5" value="0"
+               placeholder="Descuento Bs." style="font-size:1.5rem;padding:7px 10px;">
+        <button class="btn-desc" id="btn-aplicar-desc" type="button" style="font-size:1.5rem;">Aplicar</button>
+      </div>
+      <div class="total-row grande" style="margin-top:8px;"><span>Total</span><span id="v-total">0.00 Bs.</span></div>
+      <div style="margin-top:8px;">
+        <div style="font-size:1.5rem;color:#8888aa;margin-bottom:3px;">Efectivo recibido</div>
+        <input type="number" class="inp-num" id="v-efec" min="0" step="1" value="0">
+      </div>
+      <div class="cambio-box" id="cambio-box">
+        <span>Cambio</span><span id="v-cambio" style="font-size:1.5rem;">0.00 Bs.</span>
+      </div>
+    </div>
+
+    <button class="btn-finalizar" id="btn-finalizar-venta" type="button">Finalizar y emitir ticket</button>
+    <button class="btn-cancelar" id="btn-cancelar-venta" type="button">🗑 Cancelar venta</button>
+
+  </div>
+</div>
+
+
+<div class="overlay" id="ov-qty">
+  <div class="modal-box">
+    <h5 id="m-nombre">Producto</h5>
+    <div class="modal-precio" id="m-precio"></div>
+    <div class="qty-ctrl">
+      <button class="qty-btn" id="qty-btn-menos" type="button">−</button>
+      <input type="number" class="qty-inp" id="qty" min="1" value="1">
+      <button class="qty-btn" id="qty-btn-mas" type="button">+</button>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-nope" id="qty-cancelar" type="button">Cancelar</button>
+      <button class="btn-ok" id="qty-agregar" type="button">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<div class="ticket-overlay" id="ov-ticket">
+  <div class="ticket-wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h5>Ticket de venta</h5>
+      <button class="btn-cerrar-t" id="ticket-cerrar-1" type="button">✕</button>
+    </div>
+    <div id="ticket-papel"></div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-imprimir" id="ticket-imprimir" type="button">🖨 Imprimir</button>
+      <button class="btn-cerrar-t" id="ticket-cerrar-2" type="button">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block tail_js %}
+  {{ super() }}
+  <script>
+    window.REGISTRAR_VENTA_URLS = {
+      getMenu: "{{ url_for('RegistrarVentaView.get_menu') }}",
+      guardarVenta: "{{ url_for('RegistrarVentaView.guardar_venta') }}"
+    };
+  </script>
+  <script src="{{ url_for('static', filename='js/registrar_venta.js') }}"></script>
+{% endblock %}
