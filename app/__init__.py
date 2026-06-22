@@ -19,6 +19,8 @@ def create_app() -> Flask:
         from .models.venta import Venta
         from .views.detalle_venta_view import DetalleVentaView
         from .models.detalle_venta import DetalleVenta
+        from .views.ticket_view import TicketView
+        from .models.ticket import Ticket
 
         db.create_all()
 
@@ -27,4 +29,5 @@ def create_app() -> Flask:
         appbuilder.add_view(ClienteView, "Clientes", icon="fa-user", category="Ventas")
         appbuilder.add_view(VentaView, "Ventas", icon="fa-shopping-cart", category="Ventas")
         appbuilder.add_view(DetalleVentaView, "Detalle de Ventas", icon="fa-list", category="Ventas")
+        appbuilder.add_view(TicketView, "Tickets", icon="fa-ticket", category="Ventas")
     return app
