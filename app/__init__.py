@@ -28,6 +28,10 @@ def create_app() -> Flask:
         appbuilder.add_view(MenuView, "Menus", icon="fa-cutlery", category="Catálogos")
         appbuilder.add_view(ClienteView, "Clientes", icon="fa-user", category="Ventas")
         appbuilder.add_view(VentaView, "Ventas", icon="fa-shopping-cart", category="Ventas")
-        appbuilder.add_view(DetalleVentaView, "Detalle de Ventas", icon="fa-list", category="Ventas")
+        appbuilder.add_view(DetalleVentaView, "Detalle Ventas", icon="fa-list", category="Ventas")
         appbuilder.add_view(TicketView, "Tickets", icon="fa-ticket", category="Ventas")
+
+        from .security_setup import setup_roles_and_permissions
+        setup_roles_and_permissions(appbuilder)
+
     return app
