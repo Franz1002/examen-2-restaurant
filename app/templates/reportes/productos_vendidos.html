@@ -58,6 +58,7 @@
       {
         canvasId: 'chartProductos',
         tipo: 'barras_h',
+        title: 'Ingresos por Producto (Bs.)',
         labels: [{% for item in reporte %}"{{ item.nombre }}",{% endfor %}],
         data: [{
           label: 'Ingresos por producto (Bs.)',
