@@ -56,6 +56,7 @@
       {
         canvasId: 'chartClientes',
         tipo: 'dona',
+        title: 'Total Gastado por Cliente (Bs.)',
         labels: [{% for item in reporte[:8] %}"{{ item.nombre if item.nombre else 'Consumidor Final' }}",{% endfor %}],
         data: [{
           label: 'Total gastado (Bs.)',

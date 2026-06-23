@@ -20,30 +20,31 @@
 
     let chartType = 'bar';
     let chartOptions = {
-      plugins: { legend: { display: true } },
+      plugins: {
+        legend: { display: true },
+        title: { display: true, text: title || '', font: { size: 16 }, padding: { bottom: 20 } }
+      },
       scales: { y: { beginAtZero: true } }
     };
 
     if (tipo === 'barras_h') {
       chartType = 'bar';
       chartOptions.indexAxis = 'y';
-      chartOptions.plugins = { legend: { display: false } };
+      chartOptions.plugins.legend = { display: false };
     } else if (tipo === 'dona') {
       chartType = 'doughnut';
-      chartOptions.plugins = { legend: { position: 'right' } };
+      delete chartOptions.scales;
+      chartOptions.plugins.legend = { position: 'right' };
     } else if (tipo === 'linea') {
       chartType = 'line';
-      chartOptions.plugins = { legend: { display: true } };
+      chartOptions.plugins.legend = { display: true };
     }
 
     chartOptions = { ...chartOptions, ...options };
 
     new Chart(ctx, {
       type: chartType,
-      data: {
-        labels: labels,
-        datasets: data
-      },
+      data: { labels: labels, datasets: data },
       options: chartOptions
     });
   }

@@ -100,6 +100,7 @@
         labels: [{% for item in reporte_diario|reverse %}"{{ item.fecha }}",{% endfor %}],
         data: [{
           label: 'Total vendido por día (Bs.)',
+          title: 'Ventas Diarias (Bs.)',
           data: [{% for item in reporte_diario|reverse %}{{ item.total_dia or 0 }},{% endfor %}],
           borderColor: '#27ae60',
           backgroundColor: 'rgba(39,174,96,0.2)',
