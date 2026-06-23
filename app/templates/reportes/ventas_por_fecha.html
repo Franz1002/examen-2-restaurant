@@ -1,0 +1,115 @@
+{% extends "appbuilder/base.html" %}
+
+{% block head_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/reportes.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="reportes-container container-fluid">
+
+  <div class="reportes-header">
+    <h2>Reporte 3: Corte de Caja - Ventas por Rango de Fechas</h2>
+  </div>
+
+  <div class="filter-card">
+    <h5>Filtrar por Fecha</h5>
+    <form method="get" class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">Desde</label>
+        <input type="date" class="form-control" name="fecha_inicio" value="{{ fecha_inicio }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Hasta</label>
+        <input type="date" class="form-control" name="fecha_fin" value="{{ fecha_fin }}">
+      </div>
+      <div class="col-md-4" style="display: flex; align-items: flex-end;">
+        <button type="submit" class="btn btn-primary w-100">Actualizar Reporte</button>
+      </div>
+    </form>
+  </div>
+
+  {% if venta_data %}
+  <div class="stats-row">
+    <div class="stat-card stat-success">
+      <h6>Total Vendido</h6>
+      <h3>{{ "%.2f"|format(venta_data.total_vendido or 0) }} Bs.</h3>
+    </div>
+    <div class="stat-card stat-warning">
+      <h6>Total Descuentos</h6>
+      <h3>{{ "%.2f"|format(venta_data.total_descuentos or 0) }} Bs.</h3>
+    </div>
+    <div class="stat-card stat-info">
+      <h6>Efectivo Recibido</h6>
+      <h3>{{ "%.2f"|format(venta_data.efectivo_recibido or 0) }} Bs.</h3>
+    </div>
+    <div class="stat-card stat-secondary">
+      <h6>Cambio Entregado</h6>
+      <h3>{{ "%.2f"|format(venta_data.cambio_entregado or 0) }} Bs.</h3>
+    </div>
+  </div>
+
+  <div style="background: white; border-radius: 8px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+    <strong>Total de Tickets:</strong> {{ venta_data.num_tickets or 0 }}
+  </div>
+  {% endif %}
+
+  <h5 style="margin-top: 30px; color: #16213e; font-weight: 700;">Detalle Diario</h5>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Total del Día</th>
+          <th>Tickets</th>
+          <th>Descuentos</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in reporte_diario %}
+        <tr>
+          <td><strong>{{ item.fecha }}</strong></td>
+          <td class="fw-bold text-success">{{ "%.2f"|format(item.total_dia or 0) }} Bs.</td>
+          <td><span class="badge" style="background:#1565c0;color:white;">{{ item.tickets_dia or 0 }}</span></td>
+          <td>{{ "%.2f"|format(item.desc_dia or 0) }} Bs.</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="4" class="text-center text-muted">No hay datos en este rango de fechas</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="chart-wrapper">
+    <canvas id="chartVentas"></canvas>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block tail_js %}
+  {{ super() }}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script>
+    window.REPORTES_DATA = [
+      {
+        canvasId: 'chartVentas',
+        tipo: 'linea',
+        labels: [{% for item in reporte_diario|reverse %}"{{ item.fecha }}",{% endfor %}],
+        data: [{
+          label: 'Total vendido por día (Bs.)',
+          title: 'Ventas Diarias (Bs.)',
+          data: [{% for item in reporte_diario|reverse %}{{ item.total_dia or 0 }},{% endfor %}],
+          borderColor: '#27ae60',
+          backgroundColor: 'rgba(39,174,96,0.2)',
+          fill: true,
+          tension: 0.3,
+          borderWidth: 2
+        }]
+      }
+    ];
+  </script>
+  <script src="{{ url_for('static', filename='js/reportes.js') }}"></script>
+{% endblock %}

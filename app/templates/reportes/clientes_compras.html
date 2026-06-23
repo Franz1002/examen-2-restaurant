@@ -1,0 +1,70 @@
+{% extends "appbuilder/base.html" %}
+
+{% block head_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/reportes.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="reportes-container container-fluid">
+
+  <div class="reportes-header">
+    <h2>Reporte 2: Historial de Compras por Cliente</h2>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Celular</th>
+          <th>Número de Tickets</th>
+          <th>Total Gastado</th>
+          <th>Ticket Promedio</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in reporte %}
+        <tr>
+          <td><strong>{{ item.nombre if item.nombre else 'Consumidor Final' }}</strong></td>
+          <td>{{ item.celular if item.celular else '-' }}</td>
+          <td><span class="badge" style="background:#1565c0;color:white;">{{ item.num_tickets or 0 }}</span></td>
+          <td class="fw-bold text-success">{{ "%.2f"|format(item.total_gastado or 0) }} Bs.</td>
+          <td>{{ "%.2f"|format(item.ticket_promedio or 0) }} Bs.</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5" class="text-center text-muted">No hay datos disponibles</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="chart-wrapper" style="max-width: 500px;">
+    <canvas id="chartClientes"></canvas>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block tail_js %}
+  {{ super() }}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script>
+    window.REPORTES_DATA = [
+      {
+        canvasId: 'chartClientes',
+        tipo: 'dona',
+        title: 'Total Gastado por Cliente (Bs.)',
+        labels: [{% for item in reporte[:8] %}"{{ item.nombre if item.nombre else 'Consumidor Final' }}",{% endfor %}],
+        data: [{
+          label: 'Total gastado (Bs.)',
+          data: [{% for item in reporte[:8] %}{{ item.total_gastado or 0 }},{% endfor %}],
+          backgroundColor: ['#1565c0','#27ae60','#f5a623','#ef5350','#8e44ad','#16a085','#e67e22','#34495e']
+        }]
+      }
+    ];
+  </script>
+  <script src="{{ url_for('static', filename='js/reportes.js') }}"></script>
+{% endblock %}

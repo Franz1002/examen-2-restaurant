@@ -13,6 +13,7 @@ class Menu(db.Model):
 
     categoria_id = Column(Integer, ForeignKey("categoria.id"), nullable=False)
     categoria = relationship("Categoria", backref="menus")
+    
 
     def __repr__(self):
         return self.nombre

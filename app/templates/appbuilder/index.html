@@ -1,0 +1,64 @@
+{% extends "appbuilder/base.html" %}
+
+{% block head_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1><i class="fas fa-cash-register"></i> Arqueo Diario</h1>
+    <p class="text-muted" id="fecha-actual"></p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card card-success">
+      <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
+      <div class="stat-content">
+        <h6>Total Vendido Hoy</h6>
+        <h3>{{ "%.2f"|format(arqueo.total_vendido or 0) }} Bs.</h3>
+      </div>
+    </div>
+    <div class="stat-card card-info">
+      <div class="stat-icon"><i class="fas fa-receipt"></i></div>
+      <div class="stat-content">
+        <h6>Tickets Emitidos</h6>
+        <h3>{{ arqueo.num_tickets or 0 }}</h3>
+      </div>
+    </div>
+    <div class="stat-card card-warning">
+      <div class="stat-icon"><i class="fas fa-tag"></i></div>
+      <div class="stat-content">
+        <h6>Total Descuentos</h6>
+        <h3>{{ "%.2f"|format(arqueo.total_descuentos or 0) }} Bs.</h3>
+      </div>
+    </div>
+    <div class="stat-card card-primary">
+      <div class="stat-icon"><i class="fas fa-hand-holding-usd"></i></div>
+      <div class="stat-content">
+        <h6>Efectivo Recibido</h6>
+        <h3>{{ "%.2f"|format(arqueo.efectivo_recibido or 0) }} Bs.</h3>
+      </div>
+    </div>
+    <div class="stat-card card-secondary">
+      <div class="stat-icon"><i class="fas fa-exchange-alt"></i></div>
+      <div class="stat-content">
+        <h6>Cambio Entregado</h6>
+        <h3>{{ "%.2f"|format(arqueo.cambio_entregado or 0) }} Bs.</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="acciones-row">
+    <a href="/reportes/ventas-por-fecha" class="btn btn-outline-primary">
+      <i class="fas fa-chart-line"></i> Ver Reporte Detallado
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+{% block tail_js %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
