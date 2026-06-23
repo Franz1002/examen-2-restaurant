@@ -22,6 +22,7 @@ def create_app() -> Flask:
         from .views.ticket_view import TicketView
         from .models.ticket import Ticket
         from .views.registrar_venta_view import RegistrarVentaView
+        from .views.reportes_view import ReportesView
 
         db.create_all()
 
@@ -32,7 +33,9 @@ def create_app() -> Flask:
         appbuilder.add_view(VentaView, "Ventas", icon="fa-shopping-cart", category="Ventas")
         appbuilder.add_view(DetalleVentaView, "Detalle Ventas", icon="fa-list", category="Ventas")
         appbuilder.add_view(TicketView, "Tickets", icon="fa-ticket", category="Ventas")
-        
+        appbuilder.add_view(ReportesView, "Productos Vendidos", icon="fa-bar-chart", category="Reportes", href="/reportes/productos-vendidos")
+        appbuilder.add_link("Clientes y Compras", icon="fa-users", category="Reportes", href="/reportes/clientes-compras")
+        appbuilder.add_link("Corte de Caja", icon="fa-calendar", category="Reportes", href="/reportes/ventas-por-fecha")
         appbuilder.add_view_no_menu(RegistrarVentaView)
         
         from .security_setup import setup_roles_and_permissions
