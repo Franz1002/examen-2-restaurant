@@ -1,42 +1,71 @@
 {% extends "appbuilder/base.html" %}
 
+{% block head_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/reportes.css') }}">
+{% endblock %}
+
 {% block content %}
-<div class="container-fluid mt-4">
+<div class="reportes-container container-fluid">
+
+  <div class="reportes-header">
     <h2>Reporte 1: Productos Más Vendidos</h2>
-    <hr>
-    
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Producto</th>
-                    <th>Categoría</th>
-                    <th>Cantidad Vendida</th>
-                    <th>Veces Vendido</th>
-                    <th>Ingresos Total</th>
-                    <th>Precio Promedio</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in reporte %}
-                <tr>
-                    <td><strong>{{ item.nombre }}</strong></td>
-                    <td><span class="badge bg-info">{{ item.categoria }}</span></td>
-                    <td class="fw-bold">{{ item.cantidad_total }}</td>
-                    <td>{{ item.veces_vendido }}</td>
-                    <td class="fw-bold text-success">{{ "%.2f"|format(item.ingresos_total) }} Bs.</td>
-                    <td>{{ "%.2f"|format(item.ingresos_total / item.cantidad_total if item.cantidad_total > 0 else 0) }} Bs.</td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="6" class="text-center text-muted">No hay datos disponibles</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    
-    <div id="chartProductos" style="margin-top: 40px;">
-    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Categoría</th>
+          <th>Cantidad Vendida</th>
+          <th>Veces Vendido</th>
+          <th>Ingresos Total</th>
+          <th>Precio Promedio</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in reporte %}
+        <tr>
+          <td><strong>{{ item.nombre }}</strong></td>
+          <td><span class="badge" style="background:#1565c0;color:white;">{{ item.categoria }}</span></td>
+          <td class="fw-bold">{{ item.cantidad_total }}</td>
+          <td>{{ item.veces_vendido }}</td>
+          <td class="fw-bold text-success">{{ "%.2f"|format(item.ingresos_total) }} Bs.</td>
+          <td>{{ "%.2f"|format(item.ingresos_total / item.cantidad_total if item.cantidad_total > 0 else 0) }} Bs.</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="text-center text-muted">No hay datos disponibles</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="chart-wrapper">
+    <canvas id="chartProductos"></canvas>
+  </div>
+
 </div>
+{% endblock %}
+
+{% block tail_js %}
+  {{ super() }}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script>
+    window.REPORTES_DATA = [
+      {
+        canvasId: 'chartProductos',
+        tipo: 'barras_h',
+        labels: [{% for item in reporte %}"{{ item.nombre }}",{% endfor %}],
+        data: [{
+          label: 'Ingresos por producto (Bs.)',
+          data: [{% for item in reporte %}{{ item.ingresos_total }},{% endfor %}],
+          backgroundColor: '#1565c0'
+        }]
+      }
+    ];
+  </script>
+  <script src="{{ url_for('static', filename='js/reportes.js') }}"></script>
 {% endblock %}
