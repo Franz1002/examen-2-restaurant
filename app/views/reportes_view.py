@@ -117,3 +117,27 @@ class ReportesView(BaseView):
             fecha_inicio=fecha_inicio.strftime('%Y-%m-%d'),
             fecha_fin=fecha_fin.strftime('%Y-%m-%d')
         )
+    
+    @expose("/dashboard")
+    @login_required
+    def dashboard(self):
+        from datetime import datetime
+        
+        hoy = datetime.now().date()
+        
+        arqueo = db.session.query(
+            func.sum(Venta.total_venta).label('total_vendido'),
+            func.sum(Ticket.descuento).label('total_descuentos'),
+            func.sum(Ticket.efectivo_recibido).label('efectivo_recibido'),
+            func.sum(Ticket.cambio).label('cambio_entregado'),
+            func.count(Ticket.id).label('num_tickets')
+        ).join(
+            Ticket, Venta.id == Ticket.venta_id
+        ).filter(
+            func.date(Venta.fecha_venta) == hoy
+        ).first()
+        
+        return self.render_template(
+            "dashboard.html",
+            arqueo=arqueo
+        )

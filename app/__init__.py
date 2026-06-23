@@ -1,5 +1,7 @@
 from flask import Flask
 from .extensions import appbuilder, db
+from datetime import datetime
+from sqlalchemy import func
 
 
 def create_app() -> Flask:
@@ -28,7 +30,7 @@ def create_app() -> Flask:
 
         appbuilder.add_view(CategoriaView, "Categorias", icon="fa-folder-open-o", category="Catálogos")
         appbuilder.add_view(MenuView, "Menus", icon="fa-cutlery", category="Catálogos")
-        appbuilder.add_view(RegistrarVentaView,"Registrar Venta",icon="fa-cash-register",category="Compras y ventas",href="/registrar-venta/")
+        appbuilder.add_view(RegistrarVentaView, "Registrar Venta", icon="fa-cash-register", category="Compras y ventas", href="/registrar-venta/")
         appbuilder.add_view(ClienteView, "Clientes", icon="fa-user", category="Ventas")
         appbuilder.add_view(VentaView, "Ventas", icon="fa-shopping-cart", category="Ventas")
         appbuilder.add_view(DetalleVentaView, "Detalle Ventas", icon="fa-list", category="Ventas")
@@ -36,9 +38,25 @@ def create_app() -> Flask:
         appbuilder.add_view(ReportesView, "Productos Vendidos", icon="fa-bar-chart", category="Reportes", href="/reportes/productos-vendidos")
         appbuilder.add_link("Clientes y Compras", icon="fa-users", category="Reportes", href="/reportes/clientes-compras")
         appbuilder.add_link("Corte de Caja", icon="fa-calendar", category="Reportes", href="/reportes/ventas-por-fecha")
-        appbuilder.add_view_no_menu(RegistrarVentaView)
-        
+
         from .security_setup import setup_roles_and_permissions
         setup_roles_and_permissions(appbuilder)
+
+        @app.context_processor
+        def inject_arqueo():
+            from flask_login import current_user
+            if current_user.is_authenticated:
+                hoy = datetime.now().date()
+                arqueo = db.session.query(
+                    func.sum(Venta.total_venta).label('total_vendido'),
+                    func.sum(Ticket.descuento).label('total_descuentos'),
+                    func.sum(Ticket.efectivo_recibido).label('efectivo_recibido'),
+                    func.sum(Ticket.cambio).label('cambio_entregado'),
+                    func.count(Ticket.id).label('num_tickets')
+                ).join(Ticket, Venta.id == Ticket.venta_id
+                ).filter(func.date(Venta.fecha_venta) == hoy
+                ).first()
+                return dict(arqueo=arqueo)
+            return dict(arqueo=None)
 
     return app

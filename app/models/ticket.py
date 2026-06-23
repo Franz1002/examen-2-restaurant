@@ -2,6 +2,7 @@ from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.extensions import db
+from app.models.cliente import Cliente
 
 class Ticket(db.Model):
     __tablename__ = "ticket"
@@ -18,7 +19,7 @@ class Ticket(db.Model):
     venta = relationship("Venta", backref="ticket")
 
     cliente_id = Column(Integer, ForeignKey("cliente.id"), nullable=True)
-    cliente = relationship("Cliente")
+    cliente = relationship(Cliente)
 
     def __repr__(self):
         return f"Ticket #{self.id}"
