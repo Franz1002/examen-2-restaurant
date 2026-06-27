@@ -1,8 +1,8 @@
 {% extends "appbuilder/base.html" %}
 
 {% block head_css %}
-  {{ super() }}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/reportes.css') }}">
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reportes.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -46,27 +46,32 @@
   <div class="chart-wrapper">
     <canvas id="chartProductos"></canvas>
   </div>
+  <div class="pronostico-card">
+  <h5>Pronósticos con IA (Gemini)</h5>
+  <pre>{{ pronostico }}</pre>
+</div>
 
 </div>
 {% endblock %}
 
 {% block tail_js %}
-  {{ super() }}
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-  <script>
-    window.REPORTES_DATA = [
-      {
-        canvasId: 'chartProductos',
-        tipo: 'barras_h',
-        title: 'Ingresos por Producto (Bs.)',
-        labels: [{% for item in reporte %}"{{ item.nombre }}",{% endfor %}],
-        data: [{
-          label: 'Ingresos por producto (Bs.)',
-          data: [{% for item in reporte %}{{ item.ingresos_total }},{% endfor %}],
-          backgroundColor: '#1565c0'
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+  window.REPORTES_DATA = [
+    {
+      canvasId: 'chartProductos',
+      tipo: 'barras_h',
+      title: 'Ingresos por Producto (Bs.)',
+      labels: [{% for item in reporte %}"{{ item.nombre }}", {% endfor %}],
+    data: [{
+      label: 'Ingresos por producto (Bs.)',
+      data: [{% for item in reporte %}{{ item.ingresos_total }}, {% endfor %}],
+      backgroundColor: '#1565c0'
         }]
       }
     ];
-  </script>
-  <script src="{{ url_for('static', filename='js/reportes.js') }}"></script>
+</script>
+<script src="{{ url_for('static', filename='js/reportes.js') }}"></script>
+
 {% endblock %}
