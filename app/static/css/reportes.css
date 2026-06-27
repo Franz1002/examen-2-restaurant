@@ -1,129 +1,175 @@
 .reportes-container {
-  background: #f8f9fa;
-  padding: 20px;
+  padding: 35px 25px;
+  min-height: 100vh;
+  background: transparent;
 }
 
 .reportes-header {
-  margin-bottom: 30px;
-  border-bottom: 3px solid #1565c0;
+  margin-bottom: 35px;
   padding-bottom: 15px;
+  border-bottom: 2px solid var(--cl-orange);
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .reportes-header h2 {
-  color: #16213e;
-  font-weight: 700;
-  margin: 0;
+  color: var(--cl-orange) !important;
+  font-weight: 800 !important;
+  font-size: 1.6rem !important;
+  margin: 0 !important;
 }
 
+/* ── STATS ROW (ventas por fecha) ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  border-radius: 12px;
+  padding: 22px 18px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+.stat-card h6 {
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  opacity: 0.85;
+  margin-bottom: 10px !important;
+  font-weight: 600 !important;
+}
+
+.stat-card h3 {
+  font-size: 1.7rem !important;
+  font-weight: 800 !important;
+  margin: 0 !important;
+}
+
+.stat-success {
+  background: linear-gradient(135deg, #1a4a2e, #27ae60);
+  color: white;
+}
+
+.stat-warning {
+  background: linear-gradient(135deg, #4a3000, var(--cl-orange));
+  color: white;
+}
+
+.stat-info {
+  background: linear-gradient(135deg, #0d2b5e, var(--cl-blue));
+  color: white;
+}
+
+.stat-secondary {
+  background: linear-gradient(135deg, #2e2e50, #7f8c8d);
+  color: white;
+}
+
+/* ── FILTRO DE FECHAS ── */
+.filter-card {
+  background: var(--cl-card) !important;
+  border: 1px solid var(--cl-border) !important;
+  border-radius: var(--radius) !important;
+  padding: 22px !important;
+  margin-bottom: 25px !important;
+  box-shadow: var(--shadow) !important;
+}
+
+.filter-card h5 {
+  color: var(--cl-orange) !important;
+  font-weight: 700 !important;
+  margin-bottom: 15px !important;
+}
+
+/* ── TABLA ── */
+.table-responsive {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 25px;
+}
+
+/* ── GRÁFICA ── */
 .chart-wrapper {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  margin-top: 30px;
+  background: var(--cl-card);
+  border: 1px solid var(--cl-border);
+  border-radius: var(--radius);
+  padding: 25px;
+  box-shadow: var(--shadow);
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 .chart-wrapper canvas {
   max-width: 100%;
-  height: auto;
 }
 
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.stat-card {
-  border-radius: 8px;
-  padding: 20px;
-  color: white;
-  text-align: center;
-}
-
-.stat-card h6 {
-  margin: 0 0 10px 0;
-  font-size: 0.9rem;
-  opacity: 0.9;
-}
-
-.stat-card h3 {
-  margin: 0;
-  font-size: 1.8rem;
-  font-weight: 800;
-}
-
-.stat-success {
-  background: linear-gradient(135deg, #27ae60, #229954);
-}
-
-.stat-warning {
-  background: linear-gradient(135deg, #f5a623, #e67e22);
-}
-
-.stat-info {
-  background: linear-gradient(135deg, #1565c0, #1976d2);
-}
-
-.stat-secondary {
-  background: linear-gradient(135deg, #7f8c8d, #95a5a6);
-}
-
-.filter-card {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  margin-bottom: 20px;
-}
-
-.filter-card h5 {
-  color: #16213e;
-  margin-bottom: 15px;
-  font-weight: 700;
-}
-
-table.table {
-  background: white;
-  border-radius: 8px;
+/* ── CARD DE PRONÓSTICO IA ── */
+.pronostico-card {
+  background: var(--cl-card);
+  border: 1px solid var(--cl-border);
+  border-left: 4px solid var(--cl-orange);
+  border-radius: var(--radius);
+  padding: 25px;
+  margin-top: 25px;
+  box-shadow: var(--shadow);
+  position: relative;
   overflow: hidden;
 }
 
-table.table thead {
-  background: #16213e;
-  color: white;
-}
-
-table.table tbody tr:hover {
-  background: #f0f0f0;
-}
-
-.badge {
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-weight: 600;
-}
-
-.pronostico-card {
-  background: #f0f7ff;
-  border-left: 4px solid #1565c0;
-  border-radius: 8px;
-  padding: 20px;
-  margin-top: 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+.pronostico-card::before {
+  content: '🤖';
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 2.5rem;
+  opacity: 0.1;
 }
 
 .pronostico-card h5 {
-  color: #1565c0;
-  font-weight: 700;
-  margin-bottom: 12px;
+  color: var(--cl-orange) !important;
+  font-weight: 700 !important;
+  margin-bottom: 15px !important;
+  font-size: 1rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
 }
 
 .pronostico-card pre {
   white-space: pre-wrap;
-  font-family: inherit;
-  font-size: 0.95rem;
-  color: #2c3e50;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 1rem;  
   margin: 0;
+  line-height: 2;
+  background: transparent !important;
+  color: var(--cl-text) !important;
 }
+
+/* ── BADGE CATEGORIA ── */
+.badge {
+  padding: 6px 12px !important;
+  border-radius: 20px !important;
+  font-size: 0.75rem !important;
+}
+
+@media (max-width: 768px) {
+  .stats-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .reportes-header h2 {
+    font-size: 1.2rem !important;
+  }
+}
+
