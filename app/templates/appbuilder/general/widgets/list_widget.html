@@ -1,0 +1,60 @@
+{% import 'appbuilder/general/lib.html' as lib %}
+
+<div class="well well-sm">
+    {% if include_pagesize %}
+        {{ lib.pagesize_widget(page_size, base_filters) }}
+    {% endif %}
+    {% if include_filters %}
+        {{ lib.search_widget(search_widget) }}
+    {% endif %}
+    <div class="pull-right">
+        {% if add_widget %}
+            <a class="btn btn-sm btn-naranja" href="{{ add_widget.href }}"
+               data-toggle="tooltip" rel="tooltip" title="{{ add_widget.label }}">
+                <i class="fa fa-plus"></i> Agregar
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Acciones</th>
+                {% for col in list_columns %}
+                <th>{{ col.label }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in list_widget.value %}
+            <tr>
+                <td class="acciones-col">
+                    {% if show_widget %}
+                    <a href="{{ show_widget.href(item.pk) }}"
+                       class="btn-accion btn-ver" title="Ver">
+                        <i class="fa fa-eye"></i> Ver
+                    </a>
+                    {% endif %}
+                    {% if edit_widget %}
+                    <a href="{{ edit_widget.href(item.pk) }}"
+                       class="btn-accion btn-editar" title="Editar">
+                        <i class="fa fa-pencil"></i> Editar
+                    </a>
+                    {% endif %}
+                    {% if delete_widget %}
+                    <a href="{{ delete_widget.href(item.pk) }}"
+                       class="btn-accion btn-eliminar" title="Eliminar">
+                        <i class="fa fa-trash"></i> Eliminar
+                    </a>
+                    {% endif %}
+                </td>
+                {% for col in list_columns %}
+                <td>{{ item[col.col_name] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
