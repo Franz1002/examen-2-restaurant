@@ -8,7 +8,7 @@ from app.models.categoria import Categoria
 from app.models.cliente import Cliente
 from app.models.ticket import Ticket
 from app.models.venta import Venta
-from app.services.gemini_service import pronostico_productos, pronostico_clientes, pronostico_ventas
+from app.services.gemini_service import pronostico_productos, pronostico_clientes, pronostico_ventas, pronostico_ventas_futuras
 from sqlalchemy import func
 from datetime import datetime, timedelta
 
@@ -127,6 +127,7 @@ class ReportesView(BaseView):
             for r in reporte_diario
         ]
         pronostico = pronostico_ventas(datos_ia)
+        pronostico_futuro = pronostico_ventas_futuras(datos_ia)
 
         return self.render_template(
             "reportes/ventas_por_fecha.html",
@@ -134,7 +135,9 @@ class ReportesView(BaseView):
             reporte_diario=reporte_diario,
             fecha_inicio=fecha_inicio.strftime('%Y-%m-%d'),
             fecha_fin=fecha_fin.strftime('%Y-%m-%d'),
-            pronostico=pronostico
+            pronostico=pronostico,
+            pronostico_futuro=pronostico_futuro
+            
         )
 
     @expose("/dashboard")
