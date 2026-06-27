@@ -58,3 +58,29 @@ y proyección de ventas futuras. Máximo 2 líneas por pronóstico.
 Sé específico con los datos. No uses markdown ni asteriscos.
 """
     return _llamar_gemini(prompt)
+
+def pronostico_ventas_futuras(datos: list) -> str:
+    prompt = f"""
+Eres un analista financiero experto para un restaurante boliviano llamado Chicken Lindo en Cochabamba.
+Analiza el historial de ventas diarias y genera una predicción concreta para los próximos 7 días.
+
+Historial de ventas (fecha, total en Bs., número de tickets):
+{datos}
+
+Genera EXACTAMENTE este formato de respuesta:
+
+PREDICCIÓN PRÓXIMOS 7 DÍAS:
+- Lunes: XX.XX Bs. (estimado de Y tickets)
+- Martes: XX.XX Bs. (estimado de Y tickets)
+- Miércoles: XX.XX Bs. (estimado de Y tickets)
+- Jueves: XX.XX Bs. (estimado de Y tickets)
+- Viernes: XX.XX Bs. (estimado de Y tickets)
+- Sábado: XX.XX Bs. (estimado de Y tickets)
+- Domingo: XX.XX Bs. (estimado de Y tickets)
+
+TENDENCIA: [Una línea describiendo la tendencia general]
+RECOMENDACIÓN: [Una acción concreta para aumentar ventas]
+
+Basa los números en el historial real proporcionado. No uses markdown ni asteriscos.
+"""
+    return _llamar_gemini(prompt)
