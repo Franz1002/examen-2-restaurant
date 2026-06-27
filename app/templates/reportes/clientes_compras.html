@@ -41,8 +41,13 @@
     </table>
   </div>
 
-  <div class="chart-wrapper" style="max-width: 500px;">
+  <div class="chart-wrapper">
     <canvas id="chartClientes"></canvas>
+  </div>
+
+  <div class="pronostico-card">
+    <h5>Pronósticos con IA (Gemini)</h5>
+    <pre>{{ pronostico }}</pre>
   </div>
 
 </div>
@@ -55,12 +60,12 @@
     window.REPORTES_DATA = [
       {
         canvasId: 'chartClientes',
-        tipo: 'dona',
+        tipo: 'barras_v',
         title: 'Total Gastado por Cliente (Bs.)',
         labels: [{% for item in reporte[:8] %}"{{ item.nombre if item.nombre else 'Consumidor Final' }}",{% endfor %}],
         data: [{
           label: 'Total gastado (Bs.)',
-          data: [{% for item in reporte[:8] %}{{ item.total_gastado or 0 }},{% endfor %}],
+          data: [{% for item in reporte[:8] %}{{ "%.2f"|format(item.total_gastado or 0) }},{% endfor %}],
           backgroundColor: ['#1565c0','#27ae60','#f5a623','#ef5350','#8e44ad','#16a085','#e67e22','#34495e']
         }]
       }

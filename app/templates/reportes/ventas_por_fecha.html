@@ -1,8 +1,8 @@
 {% extends "appbuilder/base.html" %}
 
 {% block head_css %}
-  {{ super() }}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/reportes.css') }}">
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reportes.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -49,7 +49,8 @@
     </div>
   </div>
 
-  <div style="background: white; border-radius: 8px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+  <div
+    style="background: white; border-radius: 8px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
     <strong>Total de Tickets:</strong> {{ venta_data.num_tickets or 0 }}
   </div>
   {% endif %}
@@ -85,31 +86,36 @@
   <div class="chart-wrapper">
     <canvas id="chartVentas"></canvas>
   </div>
+  <div class="pronostico-card">
+    <h5>Pronósticos con IA (Gemini)</h5>
+    <pre>{{ pronostico }}</pre>
+  </div>
 
 </div>
 {% endblock %}
 
 {% block tail_js %}
-  {{ super() }}
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-  <script>
-    window.REPORTES_DATA = [
-      {
-        canvasId: 'chartVentas',
-        tipo: 'linea',
-        labels: [{% for item in reporte_diario|reverse %}"{{ item.fecha }}",{% endfor %}],
-        data: [{
-          label: 'Total vendido por día (Bs.)',
-          title: 'Ventas Diarias (Bs.)',
-          data: [{% for item in reporte_diario|reverse %}{{ item.total_dia or 0 }},{% endfor %}],
-          borderColor: '#27ae60',
-          backgroundColor: 'rgba(39,174,96,0.2)',
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+  window.REPORTES_DATA = [
+    {
+      canvasId: 'chartVentas',
+      tipo: 'linea',
+      labels: [{% for item in reporte_diario | reverse %}"{{ item.fecha }}", {% endfor %}],
+    data: [{
+      label: 'Total vendido por día (Bs.)',
+      title: 'Ventas Diarias (Bs.)',
+      data: [{% for item in reporte_diario | reverse %}{{ item.total_dia or 0 }}, {% endfor %}],
+      borderColor: '#27ae60',
+        backgroundColor: 'rgba(39,174,96,0.2)',
           fill: true,
-          tension: 0.3,
-          borderWidth: 2
+            tension: 0.3,
+              borderWidth: 2
         }]
       }
     ];
-  </script>
-  <script src="{{ url_for('static', filename='js/reportes.js') }}"></script>
+</script>
+<script src="{{ url_for('static', filename='js/reportes.js') }}"></script>
+
 {% endblock %}

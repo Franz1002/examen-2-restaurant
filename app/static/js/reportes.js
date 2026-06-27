@@ -31,6 +31,9 @@
       chartType = 'bar';
       chartOptions.indexAxis = 'y';
       chartOptions.plugins.legend = { display: false };
+    } else if (tipo === 'barras_v') {
+      chartType = 'bar';
+      chartOptions.plugins.legend = { display: false };
     } else if (tipo === 'dona') {
       chartType = 'doughnut';
       delete chartOptions.scales;
